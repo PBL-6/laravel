@@ -3,95 +3,127 @@
         <div class="mt-4 text-center">
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-primary" id="selectButton">Select Book Cover</button>
-                    <button class="btn btn-success" id="takeButton">Take Book Cover Picture</button>
-                    <div>
-                        <small>or</small>
-                    </div>
-                    <div>
-                        <a href="#" class="text-decoration-none" id="uploadButton"><small>Upload book cover</small></a>
-                    </div>
+                    <a href="/" class="btn btn-secondary" wire:navigate>Home</a>
+                    <button class="btn btn-primary" wire:click="openSelectBookModal">Select Book Cover</button>
+                    <button class="btn btn-success">Take Book Cover Picture</button>
                 </div>
 {{--                <div class="col-6">--}}
 {{--                    <button class="btn btn-success" wire:click="openTakeModal">Take Book Cover Picture</button>--}}
 {{--                </div>--}}
             </div>
         </div>
-
-        <form wire:submit="saveUploadBook" class="border mt-3 mb-3 rounded-3" id="uploadShow" style="display: none">
-            <div class="container">
-                <div class="text-center">
-                    @if ($image)
-                        <img src="{{ $image->temporaryUrl() }}" class="mt-3 img-thumbnail" height="200" width="150">
-                    @endif
-                    <input type="file" wire:model="image" class="mt-3 form-control @error('image') is-invalid @enderror rounded-3" id="{{$file_iteration}}" accept="image/*">
-                    @error('image')
-                        <div class="text-danger mb-2"><small>{{ $message }}</small></div>
-                    @enderror
-                    <button type="submit" class="btn btn-primary w-100 mt-2 rounded-3 mb-2">Upload image</button>
+        <hr>
+        @if($is_select_book_modal_open)
+             <div class="border mt-3 rounded-3 mb-3">
+                <div class="container">
+    {{--                    <div class="row mt-2">--}}
+    {{--                        <div class="col-12">--}}
+    {{--                            <div class="text-center">--}}
+    {{--                                test--}}
+    {{--                            </div>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+                    <div class="row mt-2 mb-2">
+                        @forelse($uploadBooks as $uploadBook)
+                            <div class="col-2 text-center">
+                                <img src="{{asset('storage/' . $uploadBook->image)}}" class="mt-2 mb-2 img-thumbnail" height="200" width="150">
+                                <button class="btn btn-sm btn-primary w-100 mb-2" wire:click="selectSearchBook('{{$uploadBook->id}}')" id="selectBookButton" wire:loading.attr="disabled">
+                                    Select
+                                    <span class="spinner-border spinner-border-sm ms-1  " aria-hidden="true" wire:loading wire:target="selectSearchBook('{{$uploadBook->id}}')"></span>
+                                </button>
+                            </div>
+                        @empty
+                            <div class="text-center mt-4 mb-4">
+                                Data uploaded cover books is empty!
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
-        </form>
+        @endif
 
-         <div class="border mt-3 rounded-3 mb-3" id="selectShow" style="display: none">
-            <div class="container">
-{{--                    <div class="row mt-2">--}}
-{{--                        <div class="col-12">--}}
-{{--                            <div class="text-center">--}}
-{{--                                test--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                <div class="row">
-                    @foreach($uploadBooks as $uploadBook)
-                        <div class="col-2 text-center">
-                            <img src="{{asset('storage/' . $uploadBook->image)}}" class="mt-2 mb-2 img-thumbnail" height="200" width="150">
-                            <button class="btn btn-sm btn-primary w-100 mb-2" wire:click="selectSearchBook('{{$uploadBook->id}}')" id="selectBookButton">Select</button>
+        <div class="border container mt-3 mb-3" style="display: none" id="takeShow">
+            <div class="mt-3 mb-3">
+                <div>
+                    <video id="video" autoplay class="img-thumbnail" width="300" height="400"></video>
+                    <canvas id="canvas" width="300" height="400" style="display: none" class="text-center"></canvas>
+                </div>
+                <div class="mt-3 text-center">
+                    <button id="start-camera" class="btn btn-success rounded-3">Start Camera</button>
+                    <button id="click-photo" class="btn btn-success rounded-3">Take Picture</button>
+                </div>
+            </div>
+            <form wire:submit="searchBook" >
+                <input type="file" id="fileInput" accept="image/*" style="display: none" wire:model="image">
+            </form>
+        </div>
+
+        @if($is_results_book_modal_open)
+            <div class="container mt-3 border mb-3" id="showResult">
+                <div>
+                    Response Time: {{round($response_time, 1)}} seconds
+                </div>
+                <div class="row mt-2">
+                    @foreach ($result_books as $item)
+                        <div class="col-3 text-center">
+                            <div class="mt-2">
+                                <b>Match: {{($item[0] / 1000) * 100}}%</b>
+                            </div>
+                            <div class="mb-2">
+                                @php
+                                    $image = str_replace('train_images/', '', $item[1]);
+                                @endphp
+                                <a href="/book/{{$image}}" class="text-decoration-none" target="_blank">
+                                    <img src="http://127.0.0.1:8000/{{$item[1]}}" class="mt-2 mb-2 img-thumbnail" height="200" width="150">
+                                </a>
+                            </div>
                         </div>
                     @endforeach
                 </div>
             </div>
-        </div>
-    </div>
+        @endif
 
-    <div class="border container mt-3 mb-3" style="display: none" id="takeShow">
-        <div class="mt-3 mb-3">
-            <div>
-                <video id="video" autoplay class="img-thumbnail" width="300" height="400"></video>
-                <canvas id="canvas" width="300" height="400" style="display: none" class="text-center"></canvas>
-            </div>
-            <div class="mt-3 text-center">
-                <button id="start-camera" class="btn btn-success rounded-3">Start Camera</button>
-                <button id="click-photo" class="btn btn-success rounded-3">Take Picture</button>
-            </div>
-        </div>
-        <form wire:submit="searchBook" >
-            <input type="file" id="fileInput" accept="image/*" style="display: none" wire:model="image">
-        </form>
-    </div>
-
-    @if($result_books)
-        <div class="container mt-4 border mb-4" id="showResult">
-            <div class="row">
-                @foreach ($result_books as $item)
-                    <div class="col-3">
-                        @foreach ($item as $key => $value)
-                                    @if(is_numeric($value))
-                                        <div class="mt-2">
-                                            {{$value}}
-                                        </div>
+        @if($result_book)
+            <div class="border container mt-3 mb-3 text-center">
+                <div class="mb-2 mt-3">
+                    <img src="http://127.0.0.1:8000/train_images/{{$result_book->image}}" class="img-thumbnail mb-2" height="200" width="150">
+                </div>
+                <div class="mb-2">
+                    <b>{{$result_book->title}}</b>
+                    <hr>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Author</th>
+                            <th scope="col">Available</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Uploaded</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{$result_book->author}}</td>
+                                <td><span class="badge text-bg-{{$result_book->is_available ? 'success' : 'danger'}}">{{$result_book->is_available ? 'Available' : 'Not Available'}}</span></td>
+                                <td>
+                                    @if($result_book->location != null && $result_book->is_available)
+                                        Rak: ({{$result_book->location[0]}}), Baris: ({{$result_book->location[1]}}), Kolom: ({{$result_book->location[2]}})
                                     @else
-                                        <div class="mb-2">
-                                            <img src="http://127.0.0.1:8000/{{$value}}" class="mt-2 mb-2 img-thumbnail" height="200" width="150">
-                                        </div>
+                                        -
                                     @endif
-                        @endforeach
-                    </div>
-                @endforeach
+                                </td>
+                                <td>{{$result_book->created_at}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3 mb-3">
+                    <button class="btn btn-success btn-sm" @if($result_book->location) @else disabled @endif>Show Book Location</button>
+                    <button wire:click.prevent="openResultsBookModal" class="btn btn-secondary btn-sm">Back</button>
+                </div>
             </div>
-        </div>
-    @endif
+        @endif
 
+    </div>
 </div>
 
 @script
@@ -102,39 +134,39 @@
         let canvas = document.querySelector("#canvas");
         let fileInput = document.querySelector("#fileInput");
         let takeButton = document.querySelector('#takeButton');
-        let takeShow = document.querySelector('#takeShow');
-        let selectButton = document.querySelector('#selectButton');
-        let selectShow = document.querySelector('#selectShow');
-        let uploadButton = document.querySelector('#uploadButton');
-        let uploadShow = document.querySelector('#uploadShow');
-        let selectBookButton = document.querySelector('#selectBookButton');
+        // let takeShow = document.querySelector('#takeShow');
+        // let selectButton = document.querySelector('#selectButton');
+        // let selectShow = document.querySelector('#selectShow');
+        // let uploadButton = document.querySelector('#uploadButton');
+        // let uploadShow = document.querySelector('#uploadShow');
+        // let selectBookButton = document.querySelector('#selectBookButton');
         let localstream;
 
-        takeButton.addEventListener('click', function () {
-            selectShow.style.display = 'none';
-            uploadShow.style.display = 'none';
-            takeShow.style.display = 'block';
-        })
-
-        selectButton.addEventListener('click', function (e) {
-            e.preventDefault();
-            if(localstream){
-                localstream.getTracks()[0].stop();
-            }
-            takeShow.style.display = 'none';
-            uploadShow.style.display = 'none';
-            selectShow.style.display = 'block';
-        })
-
-        uploadButton.addEventListener('click', function (e){
-            e.preventDefault();
-            if(localstream){
-                localstream.getTracks()[0].stop();
-            }
-            takeShow.style.display = 'none';
-            selectShow.style.display = 'none';
-            uploadShow.style.display = 'block';
-        });
+        // takeButton.addEventListener('click', function () {
+        //     selectShow.style.display = 'none';
+        //     uploadShow.style.display = 'none';
+        //     takeShow.style.display = 'block';
+        // })
+        //
+        // selectButton.addEventListener('click', function (e) {
+        //     e.preventDefault();
+        //     if(localstream){
+        //         localstream.getTracks()[0].stop();
+        //     }
+        //     takeShow.style.display = 'none';
+        //     uploadShow.style.display = 'none';
+        //     selectShow.style.display = 'block';
+        // })
+        //
+        // uploadButton.addEventListener('click', function (e){
+        //     e.preventDefault();
+        //     if(localstream){
+        //         localstream.getTracks()[0].stop();
+        //     }
+        //     takeShow.style.display = 'none';
+        //     selectShow.style.display = 'none';
+        //     uploadShow.style.display = 'block';
+        // });
 
         // selectBookButton.addEventListener('click', function () {
         //     selectShow.style.display = 'none';

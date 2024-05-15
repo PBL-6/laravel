@@ -24,18 +24,17 @@ return new class extends Migration
 //            $table->foreign('book_2_id')->references('id')->on('books');
 //            $table->foreign('book_3_id')->references('id')->on('books');
 //            $table->foreign('book_4_id')->references('id')->on('books');
+            $table->integer('book_1_match_result')->nullable();
             $table->string('book_1_image_name')->nullable();
-            $table->integer('book_1_percentage')->nullable();
+            $table->integer('book_2_match_result')->nullable();
             $table->string('book_2_image_name')->nullable();
-            $table->integer('book_2_percentage')->nullable();
+            $table->integer('book_3_match_result')->nullable();
             $table->string('book_3_image_name')->nullable();
-            $table->integer('book_3_percentage')->nullable();
+            $table->integer('book_4_match_result')->nullable();
             $table->string('book_4_image_name')->nullable();
-            $table->integer('book_4_percentage')->nullable();
 
             $table->enum('type', [1,2,3]);
-            $table->integer('time')->nullable();
-
+            $table->float('response_time')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
