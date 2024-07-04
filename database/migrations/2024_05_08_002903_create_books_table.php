@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('title', 225);
             $table->string('author', 225);
             $table->string('image', 225);
-            $table->string('location', 25)->nullable();
+            $table->string('category', 225)->nullable();
             $table->boolean('is_available')->default(false);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->date('published_at');
+            $table->timestamps();
         });
     }
 

@@ -12,32 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('search_books', function (Blueprint $table) {
-//            $table->unsignedBigInteger('book_1_id');
-//            $table->unsignedBigInteger('book_2_id');
-//            $table->unsignedBigInteger('book_3_id');
-//            $table->unsignedBigInteger('book_4_id');
-
             $table->id();
-            $table->string('query_image_name');
-
-//            $table->foreign('book_1_id')->references('id')->on('books');
-//            $table->foreign('book_2_id')->references('id')->on('books');
-//            $table->foreign('book_3_id')->references('id')->on('books');
-//            $table->foreign('book_4_id')->references('id')->on('books');
-            $table->integer('book_1_match_result')->nullable();
-            $table->string('book_1_image_name')->nullable();
-            $table->integer('book_2_match_result')->nullable();
-            $table->string('book_2_image_name')->nullable();
-            $table->integer('book_3_match_result')->nullable();
-            $table->string('book_3_image_name')->nullable();
-            $table->integer('book_4_match_result')->nullable();
-            $table->string('book_4_image_name')->nullable();
-
-            $table->enum('type', [1,2,3]);
+            $table->string('query_image');
+            $table->integer('book_1_match')->nullable();
+            $table->string('book_1_image')->nullable();
+            $table->integer('book_2_match')->nullable();
+            $table->string('book_2_image')->nullable();
+            $table->integer('book_3_match')->nullable();
+            $table->string('book_3_image')->nullable();
+            $table->integer('book_4_match')->nullable();
+            $table->string('book_4_image')->nullable();
             $table->float('response_time')->nullable();
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 
