@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Book;
 
 use App\Models\Book;
+use App\Models\SearchBook;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Title;
@@ -20,10 +21,14 @@ class Edit extends Component
     public string $title;
     #[Validate('required|string|max:225')]
     public string $category;
+    #[Validate('required|boolean')]
+    public string $available;
     #[Validate('required|date')]
     public $published;
     #[Validate('nullable|image|max:2048')]
     public $image;
+
+    public $prev_image;
 
     public $authors = [];
 
@@ -47,6 +52,9 @@ class Edit extends Component
         $this->title = $book->title;
         $this->category = $book->category;
         $this->published = $book->published_at;
+        $this->available = $book->is_available;
+        $this->prev_image = $book->image;
+
         $authors = explode(' - ', $book->author);
         if(count($authors) > 1){
             foreach($authors as $author){
@@ -68,7 +76,7 @@ class Edit extends Component
 
         try {
 
-            $response = Http::asForm()->post('127.0.0.1:8000/admin/books/category', [
+            $response = Http::asForm()->post(env('FAST_API_URL') . '/admin/books/category', [
                 'title' => $validated['title']
             ]);
 
@@ -125,10 +133,11 @@ class Edit extends Component
                     $image = File::get($imagePath);
 
                     $response = Http::attach('image', $image, 'image.jpg')
-                        ->put('127.0.0.1:8000/admin/books/' . $this->id, [
+                        ->put(env('FAST_API_URL') . '/admin/books/' . $this->id, [
                             'title' => $validated['title'],
                             'author' => $combined_author_names,
                             'category' => $validated['category'],
+                            'available' => $validated['available'],
                             'published_at' => $validated['published']
                         ]);
 
@@ -151,10 +160,11 @@ class Edit extends Component
                 }
             }else{
 
-                $response = Http::asForm()->put('127.0.0.1:8000/admin/books/' . $this->id, [
+                $response = Http::asForm()->put(env('FAST_API_URL') . '/admin/books/' . $this->id, [
                         'title' => $validated['title'],
                         'author' => $combined_author_names,
                         'category' => $validated['category'],
+                        'available' => $validated['available'],
                         'published_at' => $validated['published']
                     ]);
 
@@ -188,9 +198,12 @@ class Edit extends Component
     {
         try {
 
-            $response = Http::delete('127.0.0.1:8000/admin/books/' . $this->id);
+            $response = Http::delete(env('FAST_API_URL') . '/admin/books/' . $this->id);
 
             if ($response->successful()) {
+
+                SearchBook::where('book_1_image', $this->prev_image)->delete();
+
                 $this->dispatch('toast',
                     message: 'Delete book success.',
                     success: true,

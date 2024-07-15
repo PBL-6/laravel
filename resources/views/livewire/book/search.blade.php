@@ -1,29 +1,57 @@
 <div>
-    <div class="container text-center mt-4">
-        <a href="{{route('home')}}" wire:navigate class="btn btn-secondary">Home</a>
-        <button type="button" wire:click="toggleUpload" class="btn btn-primary">Upload Book Cover</button>
-        <hr>
-        @if($isUpload)
-            <div class="mt-4">
-                <form wire:submit="search">
-                    @if($image)
-                        <img src="{{$image->temporaryUrl()}}" alt="" height="200" width="150" class="mb-4">
-                    @endif
-                    <input type="file" class="form-control" wire:model.blur="image" style="display: {{$isUpload ? 'block' : 'none'}}" accept="image/*">
-                    @error('image')
-                    {{$message}}
-                    @enderror
-                    <button type="submit" class="btn btn-secondary mt-4" wire:loading.attr="disabled" wire:target="image">Search book</button>
-                </form>
-            </div>
-        @endif
+    <div class="container mt-5">
         @if($isNotFound)
-            <div class="mt-4">
-                <img src="http://127.0.0.1:8000/query_images/{{$query_image_name}}" height="200" width="150" class="mt-2">
-                <div class="text-center mt-4 mb-4">
-                    <b class="text-danger">Book Not Found!</b>
+            <h1 class="fw-bold text-dark">
+                Search Result
+            </h1>
+            <div class="text-center">
+                <div style="height: 100%; border: 2px dashed #ccc;" class="mt-4 rounded-3">
+                    <div class="mt-4 mb-4 me-4 ms-4">
+                        <div class="mt-4">
+                            <img src="{{env('FAST_API_URL')}}/query_images/{{$query_image_name}}" height="200" width="150" class="rounded-3">
+                        </div>
+                        <div class="text-danger mt-3">
+                            <b>
+                                Book Not Found!
+                            </b>
+                        </div>
+                    </div>
                 </div>
+                <a href="{{route('search')}}" wire:navigate class="btn mt-3 mb-4" style="background-color: #008797; color: white;">
+                    Back
+                </a>
             </div>
+        @else
+            <h1 class="fw-bold text-dark">
+                Upload Cover Book
+            </h1>
+            <form wire:submit="search" class="text-center">
+                <div style="height: 100%; border: 2px dashed #ccc;" class="mt-4 rounded-3">
+                    <div class="mt-4 mb-4 me-4 ms-4">
+                        <x-file-pond wire:model.blur="image"
+                                     allowImageEdit
+                                     allowImagePreview
+                                     imagePreviewMaxHeight="250"
+                                     allowFileTypeValidation
+                                     acceptedFileTypes="['image/png', 'image/jpg', 'image/jpeg']"
+                                     allowFileSizeValidation
+                                     maxFileSize="10mb" />
+                    </div>
+                </div>
+                @error('image')
+                <div class="text-danger mt-2 mb-2">
+                    {{$message}}
+                </div>
+                @enderror
+                <button type="submit" class="btn mt-2 mb-4" wire:loading.attr="disabled" wire:target="image" style="background-color: #008797; color: white;">
+                    <span wire:loading wire:target="search">
+                        <div class="spinner-border spinner-border-sm me-1" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </span>
+                    Search
+                </button>
+            </form>
         @endif
     </div>
 </div>

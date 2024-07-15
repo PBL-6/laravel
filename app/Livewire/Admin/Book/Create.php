@@ -17,6 +17,8 @@ class Create extends Component
     public string $title;
     #[Validate('required|string|max:225')]
     public string $category;
+    #[Validate('required|boolean')]
+    public bool $available;
     #[Validate('required|date')]
     public $published;
     #[Validate('required|image|max:5048')]
@@ -50,7 +52,7 @@ class Create extends Component
 
         try {
 
-            $response = Http::asForm()->post('127.0.0.1:8000/admin/books/category', [
+            $response = Http::asForm()->post(env('FAST_API_URL') . '/admin/books/category', [
                 'title' => $validated['title']
             ]);
 
@@ -111,10 +113,11 @@ class Create extends Component
                 $image = File::get($imagePath);
 
                 $response = Http::attach('image', $image, 'image.jpg')
-                    ->post('127.0.0.1:8000/admin/books', [
+                    ->post(env('FAST_API_URL') . '/admin/books', [
                         'title' => $validated['title'],
                         'author' => $combined_author_names,
                         'category' => $validated['category'],
+                        'available' => $validated['available'],
                         'published_at' => $validated['published']
                     ]);
 

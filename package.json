@@ -9,5 +9,11 @@
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "@pqina/filepond-plugin-image-editor": "^9.1.1",
+        "@pqina/pintura": "^8.82.11",
+        "filepond": "^4.31.1",
+        "filepond-plugin-file-poster": "^2.5.1"
     }
 }

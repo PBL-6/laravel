@@ -20,7 +20,7 @@ class Search extends Component
 
     public string $query_image_name = '';
 
-    #[Validate('required|image|max:5048')]
+    #[Validate('required|image|max:10024')]
     public $image = null;
 
     public function toggleUpload()
@@ -57,7 +57,7 @@ class Search extends Component
                     $image_name = $data1['data'];
 
                     $start = microtime(true);
-                    $response2 = Http::asForm()->post('127.0.0.1:8000/user/books/search',
+                    $response2 = Http::asForm()->post(env('FAST_API_URL') . '/user/books/search',
                         ['image_name' => $image_name]
                     );
 

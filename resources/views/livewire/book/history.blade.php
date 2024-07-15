@@ -1,19 +1,15 @@
 <div>
-    <div class="container">
-        <div class="mt-3 text-center">
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{route('home')}}" wire:navigate class="btn btn-secondary">Home</a>
-                </div>
-            </div>
-            <hr>
-            <table class="table table-bordered mb-4">
+    <div class="container mt-5">
+        <h1 class="fw-bold">
+            Search History
+        </h1>
+        <div class="mt-4 text-center">
+            <table class="table table-bordered border-dark">
                 <thead>
                 <tr>
                     <th>No</th>
                     <th>Query Image</th>
                     <th colspan="4">Result Image </th>
-                    <th>Response Time</th>
                     <th>Searched At</th>
                 </tr>
                 </thead>
@@ -28,63 +24,78 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td class="text-secondary">
-                            <img src="http://127.0.0.1:8000/query_images/{{$sh->query_image}}" alt="" height="200" width="150">
+                            <img src="{{env('FAST_API_URL')}}/query_images/{{$sh->query_image}}" alt="" height="200" width="150" class="rounded-3">
                         </td>
                         <td>
                             @if($sh->book_1_image)
-                                <small><b>Match: {{($sh->book_1_match / 1000) * 100}}%</b></small>
-                                <br>
-                                <a href="/search/{{$image1}}">
-                                    <img src="http://127.0.0.1:8000/{{$sh->book_1_image}}" alt="" height="200" width="150" class="mt-2">
+                                <a href="{{route('search.detail', $image1)}}">
+                                    <img src="{{env('FAST_API_URL')}}/{{$sh->book_1_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
+                                <div class="mt-2">
+                                    <b>Match: {{($sh->book_1_match / 1000) * 100}}%</b>
+                                </div>
                             @endif
                         </td>
                         <td>
                             @if($sh->book_2_image)
-                                <small><b>Match: {{($sh->book_2_match / 1000) * 100}}%</b></small>
-                                <br>
-                                <a href="/book/{{$image2}}">
-                                    <img src="http://127.0.0.1:8000/{{$sh->book_2_image}}" alt="" height="200" width="150" class="mt-2">
+                                <a href="{{route('search.detail', $image2)}}">
+                                    <img src="{{env('FAST_API_URL')}}/{{$sh->book_2_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
+                                <div class="mt-2">
+                                    <b>Match: {{($sh->book_2_match / 1000) * 100}}%</b>
+                                </div>
                             @else
-                                None
+                                <b>
+                                    None
+                                </b>
                             @endif
                         </td>
                         <td>
                             @if($sh->book_3_image)
-                                <small><b>Match: {{($sh->book_3_match / 1000) * 100}}%</b></small>
-                                <br>
-                                <a href="/book/{{$image3}}">
-                                    <img src="http://127.0.0.1:8000/{{$sh->book_3_image}}" alt="" height="200" width="150" class="mt-2">
+                                <a href="{{route('search.detail', $image3)}}">
+                                    <img src="{{env('FAST_API_URL')}}/{{$sh->book_3_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
+                                <div class="mt-2">
+                                    <b>Match: {{($sh->book_3_match / 1000) * 100}}%</b>
+                                </div>
                             @else
-                                None
+                                <b>
+                                    None
+                                </b>
                             @endif
                         </td>
                         <td>
                             @if($sh->book_4_image)
-                                <small><b>Match: {{($sh->book_4_match / 1000) * 100}}%</b></small>
-                                <br>
-                                <a href="/book/{{$image4}}">
-                                    <img src="http://127.0.0.1:8000/{{$sh->book_4_image}}" alt="" height="200" width="150" class="mt-2">
+                                <a href="{{route('search.detail', $image4)}}">
+                                    <img src="{{env('FAST_API_URL')}}/{{$sh->book_4_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
+                                <div class="mt-2">
+                                    <b>Match: {{($sh->book_4_match / 1000) * 100}}%</b>
+                                </div>
                             @else
-                                None
+                                <b>
+                                    None
+                                </b>
                             @endif
                         </td>
                         <td>
-                            {{round($sh->response_time, 1)}}
-                            <div>
-                                seconds
-                            </div>
-                        </td>
-                        <td>
-                            {{$sh->created_at->format('d-m-Y')}}
+                            @php
+                                $date = $sh->created_at;
+                                $date->tz('Asia/Jakarta');
+                            @endphp
+                            {{$date->format('d-m-Y')}}
+                            <br>
+                            {{$date->format('H:i')}}
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+            @if($search_history)
+                <div>
+                    {{$search_history->links()}}
+                </div>
+            @endif
         </div>
     </div>
 </div>
