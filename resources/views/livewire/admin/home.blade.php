@@ -12,14 +12,14 @@
                 <i class="bx bi-journal-check"></i>
                 <span class="text">
                     <small>Available Book</small><br>
-                  <b class="fs-4">{{$available[1]}}</b>
+                  <b class="fs-4">{{$available[1] ?? 0}}</b>
                 </span>
             </li>
             <li>
                 <i class="bx bi-journal-minus"></i>
                 <span class="text">
                       <small>Not Available Book</small><br>
-                  <b class="fs-4">{{$available[0]}}</b>
+                  <b class="fs-4">{{$available[0] ?? 0}}</b>
                 </span>
             </li>
         </ul>

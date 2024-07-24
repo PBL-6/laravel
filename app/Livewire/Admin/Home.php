@@ -21,6 +21,7 @@ class Home extends Component
         $avg_match = $search_book->avg('book_1_match');
         $avg_response_time = round($response_time->avg('response_time'),1);
         $available = Book::selectRaw('is_available, COUNT(*) as count')->groupBy('is_available')->pluck('count', 'is_available');
+
         return view('livewire.admin.home', compact('avg_response_time','avg_match','total_search','total_book', 'available'));
     }
 }
