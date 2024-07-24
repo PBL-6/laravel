@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-4">
                         <div>
-                            <img src="{{env('FAST_API_URL')}}/train_images/{{$book->image}}" class="rounded-3 border border-dark" height="350" width="250">
+                            <img src="{{env('FAST_API_URL')}}/train_images/{{$book->image}}" class="rounded-3" height="350" width="250">
                         </div>
                     </div>
                     <div class="col-8">
@@ -19,9 +19,9 @@
                             <span style="color: #008797">
                                 Title
                             </span>
-                            <h2 class="fw-bold text-dark">
+                            <h3 class="fw-bold text-dark">
                                 {{$book->title}}
-                            </h2>
+                            </h3>
                         </div>
                         <div class="mt-4">
                             <span style="color: #008797">
@@ -45,7 +45,7 @@
                             </span>
                             <h4>
                                 @php
-                                    $carbonDate = \Carbon\Carbon::parse($book->date);
+                                    $carbonDate = \Carbon\Carbon::parse($book->published_at);
                                     $date = $carbonDate->format('d-m-Y');
                                 @endphp
                                 {{$date}}

@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\SearchBook;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -65,7 +66,7 @@ class Edit extends Component
         }
     }
 
-    public function addAuthors()
+    public function add_authors()
     {
         $this->authors[] = ['name' => ''];
     }
@@ -103,7 +104,7 @@ class Edit extends Component
         }
     }
 
-    public function deleteAuthors($index)
+    public function delete_authors($index)
     {
         unset($this->authors[$index]);
         $this->authors = array_values($this->authors);
@@ -144,8 +145,9 @@ class Edit extends Component
                     if ($response->successful()) {
                         $this->dispatch('toast',
                             message: 'Edit book success.',
-                            success: false,
+                            success: true,
                         );
+                        $this->redirectRoute('admin.book.index', navigate: true);
                     }else if($response->clientError()){
                         $this->dispatch('toast',
                             message: 'Validation error.',
@@ -173,6 +175,7 @@ class Edit extends Component
                         message: 'Edit book success.',
                         success: true,
                     );
+                    $this->redirectRoute('admin.book.index', navigate: true);
                 }else if($response->clientError()){
                     $this->dispatch('toast',
                         message: 'Validation error.',
@@ -232,6 +235,7 @@ class Edit extends Component
     }
 
     #[Title('Edit Book')]
+    #[Layout('components.layouts.app2')]
     public function render()
     {
         return view('livewire.admin.book.edit');

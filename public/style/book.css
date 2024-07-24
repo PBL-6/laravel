@@ -1,0 +1,71 @@
+.table-data{
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 98%;
+}
+
+.table-data > div{
+    border-radius: 20px;
+    background: white;
+    padding: 24px;
+}
+
+.table-data .book{
+    margin-left: 24px;
+    flex-grow: 0.9;
+}
+
+.table-data .book table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-data .book table th{
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid #D1D5DB;
+}
+
+.table-data .book table td{
+    padding: 16px 0;
+    align-items: center;
+    border-bottom: 1px solid #D1D5DB;
+}
+
+.table-data .book table tbody tr:hover{
+    background: #AAD7DC;
+}
+
+.table-data .book table tr td .status{
+    font-size: 10px;
+    padding: 6px 16px;
+}
+
+.table-data .book table tr td .status.available{
+    color: #047857;
+    background: #A7F3D0;
+    outline: auto;
+    outline-color: #047857;
+}
+
+.table-data .book table tr td .status.unavailable{
+    color: #B91C1C;
+    background: #FECACA;
+    outline: auto;
+    outline-color: #B91C1C;
+}
+
+.table-data .head{
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+.table-data .head h3{
+    margin-right: auto;
+}
+

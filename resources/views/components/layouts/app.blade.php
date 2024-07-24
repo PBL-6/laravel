@@ -16,12 +16,15 @@
         />
         <title>{{ $title ?? 'Page Title' }}</title>
         <style>
+            body {
+                font-family: 'Inter', sans-serif;
+            }
             .nav-link.active {
                 color: #005A65 !important;
             }
         </style>
     </head>
-    <body style="background-image: url({{ request()->routeIs('home') ? asset('img/bg1.png') : asset('img/bg2.png')}}); background-size: cover; height: 100vh; background-repeat: no-repeat;">
+    <body style="background-image: url({{ request()->routeIs('home') || request()->routeIs('login') ? asset('img/bg1.png') : asset('img/bg2.png')}}); background-size: cover; height: 100vh; background-repeat: no-repeat;">
         @include('components.layouts.header')
          <div class="container">
              @yield('main', $slot ?? '')

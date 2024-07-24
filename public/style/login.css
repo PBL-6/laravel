@@ -1,0 +1,29 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+form{
+    width: 30%;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.form-control{
+    font-size: small;
+}
+
+.text-center{
+    font-weight: 600;
+    font-size: larger;
+}
+
+.text-desc{
+    font-weight: 400;
+    font-size: small;
+    text-align: center;
+}
+

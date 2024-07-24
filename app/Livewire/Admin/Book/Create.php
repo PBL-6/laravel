@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Book;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -21,7 +22,7 @@ class Create extends Component
     public bool $available;
     #[Validate('required|date')]
     public $published;
-    #[Validate('required|image|max:5048')]
+    #[Validate('required|image|max:10024')]
     public $image;
 
     public $authors = [];
@@ -117,7 +118,7 @@ class Create extends Component
                         'title' => $validated['title'],
                         'author' => $combined_author_names,
                         'category' => $validated['category'],
-                        'available' => $validated['available'],
+                        'available' => $validated['available'] == true ? 'true' : 'false',
                         'published_at' => $validated['published']
                     ]);
 
@@ -150,6 +151,7 @@ class Create extends Component
     }
 
     #[Title('Add Book')]
+    #[Layout('components.layouts.app2')]
     public function render()
     {
         return view('livewire.admin.book.create');

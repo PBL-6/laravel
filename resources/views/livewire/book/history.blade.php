@@ -4,7 +4,7 @@
             Search History
         </h1>
         <div class="mt-4 text-center">
-            <table class="table table-bordered border-dark">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>No</th>
@@ -32,7 +32,14 @@
                                     <img src="{{env('FAST_API_URL')}}/{{$sh->book_1_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
                                 <div class="mt-2">
-                                    <b>Match: {{($sh->book_1_match / 1000) * 100}}%</b>
+                                    @php
+                                        if($sh->book_1_match > 1000){
+                                            $matched = 100;
+                                        }else{
+                                            $matched = ($sh->book_1_match / 1000) * 100;
+                                        }
+                                    @endphp
+                                    Match: {{$matched}}%
                                 </div>
                             @endif
                         </td>
@@ -42,12 +49,10 @@
                                     <img src="{{env('FAST_API_URL')}}/{{$sh->book_2_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
                                 <div class="mt-2">
-                                    <b>Match: {{($sh->book_2_match / 1000) * 100}}%</b>
+                                    Match: {{($sh->book_2_match / 1000) * 100}}%
                                 </div>
                             @else
-                                <b>
                                     None
-                                </b>
                             @endif
                         </td>
                         <td>
@@ -56,12 +61,10 @@
                                     <img src="{{env('FAST_API_URL')}}/{{$sh->book_3_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
                                 <div class="mt-2">
-                                    <b>Match: {{($sh->book_3_match / 1000) * 100}}%</b>
+                                    Match: {{($sh->book_3_match / 1000) * 100}}%
                                 </div>
                             @else
-                                <b>
-                                    None
-                                </b>
+                                None
                             @endif
                         </td>
                         <td>
@@ -70,12 +73,10 @@
                                     <img src="{{env('FAST_API_URL')}}/{{$sh->book_4_image}}" alt="" height="200" width="150" class="rounded-3">
                                 </a>
                                 <div class="mt-2">
-                                    <b>Match: {{($sh->book_4_match / 1000) * 100}}%</b>
+                                    Match: {{($sh->book_4_match / 1000) * 100}}%
                                 </div>
                             @else
-                                <b>
-                                    None
-                                </b>
+                                None
                             @endif
                         </td>
                         <td>
