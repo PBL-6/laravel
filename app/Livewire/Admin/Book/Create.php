@@ -22,7 +22,7 @@ class Create extends Component
     public bool $available;
     #[Validate('required|date')]
     public $published;
-    #[Validate('required|image|max:10024')]
+    #[Validate('required|image|max:5242')]
     public $image;
 
     public $authors = [];

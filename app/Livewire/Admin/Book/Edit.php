@@ -26,7 +26,7 @@ class Edit extends Component
     public string $available;
     #[Validate('required|date')]
     public $published;
-    #[Validate('nullable|image|max:2048')]
+    #[Validate('nullable|image|max:5242')]
     public $image;
 
     public $prev_image;
