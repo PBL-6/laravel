@@ -6,6 +6,9 @@
                 <li><a href="{{route('search')}}" class="nav-link {{ request()->routeIs('search') || request()->routeIs('search.result') || request()->routeIs('search.detail') ? 'active' : 'text-white' }}" wire:navigate>Search</a></li>
                 <li><a href="{{route('search.history')}}" class="nav-link {{ request()->routeIs('search.history') ? 'active' : 'text-white' }}" wire:navigate>History</a></li>
                 <li><a href="#" class="nav-link text-white">FAQs</a></li>
+                @auth
+                    <li><a href="{{route('admin.home')}}" class="nav-link text-white">Admin</a></li>
+                @endauth
             </ul>
             <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0 fw-bold float-end">
                 @auth

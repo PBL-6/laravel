@@ -20,7 +20,7 @@ class Search extends Component
 
     public string $query_image_name = '';
 
-    #[Validate('required|image|max:5242')]
+    #[Validate('required|image|max:10240')]
     public $image = null;
 
     public function toggleUpload()

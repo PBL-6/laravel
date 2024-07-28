@@ -35,7 +35,7 @@
                                      allowFileTypeValidation
                                      acceptedFileTypes="['image/png', 'image/jpg', 'image/jpeg']"
                                      allowFileSizeValidation
-                                     maxFileSize="5mb" />
+                                     maxFileSize="10mb" />
                     </div>
                 </div>
                 @error('image')

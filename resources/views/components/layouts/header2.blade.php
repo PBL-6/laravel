@@ -1,9 +1,10 @@
 <link rel="stylesheet" href="{{asset('style/app2.css')}}">
 <div class="sidebar d-flex flex-column p-3">
+
 {{--    <a href="/" class="d-flex justify-content-center">--}}
 {{--        <img src="{{asset('img/logopnj.png')}}" class="" width="100" alt="">--}}
 {{--    </a>--}}
-    <span class="fs-4">CoverMatch</span>
+    <span class="fs-4"><a href="{{route('home')}}" style="text-decoration: none">CoverMatch</a></span>
     <span class="fs-6">Admin Dashboard</span>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
